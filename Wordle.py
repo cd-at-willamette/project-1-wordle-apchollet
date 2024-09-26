@@ -15,13 +15,6 @@ def wordle():
     # The main function to play the Wordle game.
 
     def enter_action():
-        '''If entered word is in ENGLISH_WORDS, then:
-            gw.show_message(affirmation)
-        else:
-            gw.show_message("Not in word list")
-        '''
-
-
         # What should happen when RETURN/ENTER is pressed.
         get_row()
 
@@ -32,23 +25,15 @@ def wordle():
             gw.get_square_letter(0, coll)
             value += gw.get_square_letter(0, coll)
             value = value.lower()
-            #return value
         if value in ENGLISH_WORDS:
             gw.show_message("yay! your word is a word ")
         else:
             gw.show_message(":< your word is not a word")
 
-
-
-
-
     def word_to_row(word: str, row: int):
         for i in range(0, 5):
             coll = i
             gw.set_square_letter(0, coll, word[i])
-
-
-
 
     def word_from_row(row: int) -> str:
         gw.show_message("To do: row_to_word")
