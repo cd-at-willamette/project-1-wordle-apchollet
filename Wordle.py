@@ -1,8 +1,8 @@
 ########################################
 # Name:Aly Chollet
-# Collaborators (if any):
+# Collaborators (if any): Sophie, Cordilia
 # GenAI Transcript (if any):
-# Estimated time spent (hr):
+# Estimated time spent (hr): 6
 # Description of any added extensions:
 ########################################
 from operator import truediv
@@ -13,9 +13,22 @@ import random
 
 def wordle():
     # The main function to play the Wordle game.
+    five_letter = ''
+    five_letter_words = [word for word in ENGLISH_WORDS if len(word) == 5]
+    five_letter += random.choice(five_letter_words)
     def enter_action():
-        guess = get_row(0)
-        color_guess(guess, "glass", 0)
+        guess = get_guess(0)
+        color_guess(guess, five_letter, 0)
+        get_row(0)
+
+
+    def random_five_letter_word():
+        five_letter = ''
+        five_letter_words = [word for word in ENGLISH_WORDS if len(word) == 5]
+        five_letter += random.choice(five_letter_words)
+        return five_letter
+
+
 
     def get_row(row):
         value = ""
@@ -69,20 +82,10 @@ def wordle():
         for i in range(0, 5):
             col = i
 
-
-
-
-        #hih
-
-
-
-
     def word_to_row(word: str, row: int):
         for i in range(0, 5):
             coll = i
             gw.set_square_letter(0, coll, word[i])
-
-
 
 
     def word_from_row(row: int) -> str:
