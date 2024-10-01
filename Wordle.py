@@ -12,26 +12,28 @@ from english import * # ENGLISH_WORDS, is_english_word
 import random
 
 def wordle():
-    # The main function to play the Wordle game.
-    five_letter = ''
+    five_letter = '' #this gives me a 5 letter random word that will = correct
     five_letter_words = [word for word in ENGLISH_WORDS if len(word) == 5]
     five_letter += random.choice(five_letter_words)
+
+    def has_repeating_characters(word):
+        return len(set(word)) < len(word)
+
+    NEW_ENGLISH_WORDS = sorted([word for word in ENGLISH_WORDS if not has_repeating_characters(word)])
+
+
     def enter_action():
         row = gw.get_current_row()
         guess = get_guess(row)
-        get_row(row)
-        color_guess(guess, five_letter, row)
-        #move row
-        row = row + 1
-        gw.set_current_row(row)
-
-    def row_move():
-        gw.set_current_row(+1)
+        if get_row(row): #if word is in the list
+            color_guess(guess, five_letter, row)
+            row = row + 1 #changes row value
+            gw.set_current_row(row) #changes row
 
 
     def random_five_letter_word(): # I cant seem to call this function anywhere that alows me to use 'five_letter' so i typed the code under wordle()
         five_letter = ''
-        five_letter_words = [word for word in ENGLISH_WORDS if len(word) == 5]
+        five_letter_words = [word for word in NEW_ENGLISH_WORDS if len(word) == 5]
         five_letter += random.choice(five_letter_words)
         return five_letter
 
@@ -43,7 +45,7 @@ def wordle():
             value += gw.get_square_letter(row, coll)
             value = value.lower()
             #return value
-        if value in ENGLISH_WORDS:
+        if value in NEW_ENGLISH_WORDS:
             gw.show_message("yay! your word is a word ")
             return value
         else:
@@ -61,31 +63,27 @@ def wordle():
     def color_guess(guess, correct, row): # row += 1 so row changes when click enter
         letter_left = correct
         green_list = ""
+        yellow_list = ""
         for i in range(len(guess)):
             gw.set_square_color(row, i, MISSING_COLOR)
             if guess[i] == correct[i]:
                 gw.set_square_color(row, i, CORRECT_COLOR) #set green
                 green_list += guess[i]
+                yellow_list += correct[i]
+                for i in range(len(green_list)): #colors the letter green that are in green_list
+                    gw.set_key_color(green_list[i], CORRECT_COLOR)
+                yellow_list += guess[i]
                 letter_left = letter_left.replace(guess[i], "_")
         for i in range(len(guess)):
             if guess[i] in letter_left:
                 if guess[i] not in green_list:
                     gw.set_square_color(row, i, PRESENT_COLOR) #color yellow
+                    gw.set_key_color(guess[i], PRESENT_COLOR)
+                    letter_left = letter_left.replace(guess[i], "_")
                     letter_left = letter_left.replace(guess[i], "_")
                 elif guess[i] not in green_list:
                     if guess[i] not in letter_left:
                         gw.set_square_color(row, i, MISSING_COLOR) #color grey
-        #just for testing
-        print(row)
-        print(guess)
-        print(green_list)
-        print(letter_left)
-        print(correct)
-
-
-    def word_from_row(row: int) -> str:
-        gw.show_message("To do: row_to_word")
-        return ""  # placeholder
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
